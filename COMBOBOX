@@ -15,10 +15,10 @@ namespace LoginForm
     {
         public static SqlConnection conn = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database1.mdf;Integrated Security=True");
         int tr;
+
         public Form3()
         {
             InitializeComponent();
-
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -52,6 +52,11 @@ namespace LoginForm
             da.Fill(dt);
             dataGridView1.DataSource = dt;
             tr = dt.Rows.Count - 1;
+        }
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            comboBox1.Text = "--SELECT COURSE--";
+
         }
     }
 }
