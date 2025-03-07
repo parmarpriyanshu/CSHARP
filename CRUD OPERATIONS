@@ -22,13 +22,28 @@ namespace LoginForm
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            if (snm.Text != "" && sno.Text != "")
+            if (btnInsert.Text == "&Save")
             {
-                string sql = "insert into insertnew values('"+snm.Text+"','"+sno.Text+"')";
-                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-                localdata();
+                if (snm.Text != "" && sno.Text != "")
+                {
+                    string sql = "insert into insertnew values('" + snm.Text + "','" + sno.Text + "')";
+                    SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    localdata();
+                }
+                else
+                {
+                    MessageBox.Show("Plese Enter Values", "LoginForm", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                snm.Text = sno.Text = string.Empty;
+                snm.Focus();
+                btnInsert.Text = "&Save";
+                btnUpdate.Enabled = false;
+                btnDelete.Enabled = false;
             }
         }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -39,11 +54,6 @@ namespace LoginForm
         {
             localdata();
         }
-        private void button2_Click(object sender, EventArgs e)
-        {
-            rp = 0;
-            navigate(); 
-        }
         private void localdata()
         {
             string sql = "select * from insertnew";
@@ -52,14 +62,25 @@ namespace LoginForm
             da.Fill(dt);
             dataGridView1.DataSource = dt;
             tr = dt.Rows.Count - 1;
-
         }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            rp = 0;
+            navigate();
+            btnUpdate.Enabled = true;
+            btnDelete.Enabled = true;
+            btnInsert.Text = "&Insert";
+        }
+        
         private void button3_Click(object sender, EventArgs e)
         {
             if(rp<tr)
             {
                 rp++;
                 navigate();
+                btnUpdate.Enabled = true;
+                btnDelete.Enabled = true;
+                btnInsert.Text = "&Insert";
             }
         }
         private void button5_Click(object sender, EventArgs e)
@@ -68,6 +89,9 @@ namespace LoginForm
             {
                 rp--;
                 navigate();
+                btnUpdate.Enabled = true;
+                btnDelete.Enabled = true;
+                btnInsert.Text = "&Insert";
             }
         }
         private void button6_Click(object sender, EventArgs e)
@@ -98,6 +122,9 @@ namespace LoginForm
         {
             rp = tr;
             navigate();
+             btnUpdate.Enabled = true;
+            btnDelete.Enabled = true;
+            btnInsert.Text = "&Insert";
         }
         private void navigate()
         {
