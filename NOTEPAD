@@ -1,0 +1,100 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Notpade
+{
+    public partial class Form1: Form
+    {
+        int i = 0;
+        string fnm = string.Empty;
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            savefile();
+        }
+        private void savefile()
+        {
+            if (i == 0)
+            {
+                SaveFileDialog SD = new SaveFileDialog();
+                SD.DefaultExt = ".txt";
+                SD.Title = "Notepad Save File";
+                SD.InitialDirectory = @"D:\";
+                SD.ShowDialog();
+                if (SD.FileName != "")
+                {
+                    richTextBox1.SaveFile(SD.FileName);
+                    fnm = SD.FileName;
+                    i = 1;
+                }
+            }
+            else
+            {
+                richTextBox1.SaveFile(fnm);
+            }   
+        }
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (richTextBox1.Text != "")
+            {
+                DialogResult DR = MessageBox.Show("Save?", "Notepad", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if (DR == DialogResult.Yes)
+                {
+                    savefile();
+                    richTextBox1.Text = "";
+                    i = 0;
+                    fnm = string.Empty;
+                }
+                else
+                {
+                    richTextBox1.Text = "";
+                    i = 0;
+                    fnm = string.Empty;
+                }
+            }
+        }
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog OD = new OpenFileDialog();
+            OD.Filter = "Text Files | *.txt";
+            OD.ShowDialog();
+            if (OD.FileName != "")
+            {
+                richTextBox1.LoadFile(OD.FileName);
+                fnm = OD.FileName;
+                i = 1;
+            }
+        }
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (richTextBox1.Text != "")
+            {
+                SaveFileDialog SD = new SaveFileDialog();
+                SD.DefaultExt = ".txt";
+                SD.ShowDialog();
+                if (SD.FileName != "")
+                {
+                    richTextBox1.SaveFile(SD.FileName);
+                    i = 1;
+                    fnm = SD.FileName;
+                }
+            }
+        }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+    }
+}
